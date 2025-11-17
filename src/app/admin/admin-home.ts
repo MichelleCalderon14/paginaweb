@@ -1,59 +1,72 @@
 // src/app/admin/admin-home.ts
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../shared/auth.service';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-admin-home',
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   template: `
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="h4 mb-0">Panel de Administración</h2>
+  <div class="container mt-4">
+    <h2 class="h4 mb-2">Panel de administración</h2>
+    <p class="text-muted mb-4">
+      Desde aquí puedes gestionar docentes y noticias del colegio.
+    </p>
 
-    <button class="btn btn-outline-danger btn-sm" (click)="logout()">
-      Cerrar sesión
-    </button>
-  </div>
-
-  <div class="row g-3">
-
-    <!-- Bloque de Docentes -->
-    <div class="col-md-6 col-lg-3">
-      <div class="card shadow-sm h-100">
-        <div class="card-body d-grid">
-          <h5 class="card-title">Docentes</h5>
-          <a class="btn btn-primary mb-2" routerLink="/admin/docentes/editar">Editar docentes</a>
-          <a class="btn btn-outline-primary mb-2" routerLink="/admin/docentes/crear">Crear docente</a>
-          <a class="btn btn-outline-danger" routerLink="/admin/docentes/borrar">Borrar docentes</a>
+    <div class="row g-3">
+      <div class="col-md-4" *ngFor="let card of cards">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ card.title }}</h5>
+            <p class="card-text small mb-3">{{ card.text }}</p>
+            <a class="btn btn-primary mt-auto" [routerLink]="card.link">
+              {{ card.button }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Bloque de Noticias -->
-    <div class="col-md-6 col-lg-3">
-      <div class="card shadow-sm h-100">
-        <div class="card-body d-grid">
-          <h5 class="card-title">Noticias</h5>
-          <a class="btn btn-primary mb-2" routerLink="/admin/noticias/editar">Editar noticias</a>
-          <a class="btn btn-outline-primary mb-2" routerLink="/admin/noticias/crear">Crear noticia</a>
-          <a class="btn btn-outline-danger" routerLink="/admin/noticias/borrar">Borrar noticias</a>
-        </div>
-      </div>
-    </div>
-
   </div>
   `
 })
 export class AdminHomeComponent {
-
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/login']);
-  }
+  cards = [
+    {
+      title: 'Crear docente',
+      text: 'Registrar un nuevo docente en el sistema.',
+      button: 'Crear docente',
+      link: '/admin/docentes/crear',
+    },
+    {
+      title: 'Editar docentes',
+      text: 'Actualizar datos de docentes existentes.',
+      button: 'Editar docentes',
+      link: '/admin/docentes/editar',
+    },
+    {
+      title: 'Eliminar docentes',
+      text: 'Dar de baja docentes.',
+      button: 'Eliminar docentes',
+      link: '/admin/docentes/borrar',
+    },
+    {
+      title: 'Crear noticia',
+      text: 'Publicar una nueva noticia.',
+      button: 'Crear noticia',
+      link: '/admin/noticias/crear',
+    },
+    {
+      title: 'Editar noticias',
+      text: 'Modificar noticias publicadas.',
+      button: 'Editar noticias',
+      link: '/admin/noticias/editar',
+    },
+    {
+      title: 'Eliminar noticias',
+      text: 'Quitar noticias que ya no aplican.',
+      button: 'Eliminar noticias',
+      link: '/admin/noticias/borrar',
+    },
+  ];
 }

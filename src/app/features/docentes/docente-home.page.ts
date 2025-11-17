@@ -1,7 +1,7 @@
 // src/app/features/docentes/docente-home.page.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
 
 @Component({
@@ -9,47 +9,66 @@ import { AuthService } from '../../shared/auth.service';
   selector: 'app-docente-home',
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="p-4 border rounded-3 shadow-sm">
-
-      <!-- 🔹 Título + botón salir -->
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">Panel del Docente</h2>
-
-        <button class="btn btn-outline-danger btn-sm" (click)="logout()">
-          Cerrar sesión
-        </button>
-      </div>
-
-      <!-- Botones del panel -->
-      <div class="d-flex gap-2 flex-wrap">
-        <button class="btn btn-primary" routerLink="/docente/crear">
-          Crear alumno
-        </button>
-
-        <button class="btn btn-outline-primary" routerLink="/docente/alumnos">
-          Ver alumnos
-        </button>
-
-        <button class="btn btn-warning" routerLink="/docente/calificaciones">
-          Registro Calificaciones
-        </button>
-      </div>
-
-      <p class="text-muted mt-3 mb-0">
-        Aquí podrás gestionar tus alumnos y sus calificaciones.
+    <div class="container mt-4">
+      <h2 class="h4 mb-3">
+        Panel docente
+      </h2>
+      <p class="mb-4">
+        Docente: <strong>{{ auth.currentUsername }}</strong>
       </p>
+
+      <div class="row g-3">
+        <!-- Tarjeta: mis alumnos -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Mis alumnos</h5>
+              <p class="card-text flex-grow-1">
+                Ver la lista de alumnos inscritos con este docente.
+              </p>
+              <a
+                routerLink="/panel-docente/alumnos"
+                class="btn btn-outline-primary mt-2"
+              >
+                Ver alumnos
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta: registrar calificaciones -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Registrar calificaciones</h5>
+              <p class="card-text flex-grow-1">
+                Ingresar o actualizar notas de los alumnos.
+              </p>
+              <button class="btn btn-outline-success mt-2" disabled>
+                Registrar notas
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta: resumen de notas -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Resumen de notas</h5>
+              <p class="card-text flex-grow-1">
+                Ver el resumen de calificaciones por curso.
+              </p>
+              <button class="btn btn-outline-secondary mt-2" disabled>
+                Ver resumen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   `
 })
 export class DocenteHomeComponent {
-
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
-
-  logout() {
-    this.auth.logout();          // borra el usuario del localStorage
-    this.router.navigate(['/login']);   // te lleva al login
-  }
+  constructor(public auth: AuthService) {}
 }

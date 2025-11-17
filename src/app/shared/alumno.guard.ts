@@ -7,7 +7,7 @@ export const alumnoGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  const ok = auth.hasRole('ALUMNO');  // 👈 ahora el tipo acepta 'ALUMNO'
+  const ok = auth.hasRole('ALUMNO');
   if (!ok) {
     router.navigate(['/login']);
   }
